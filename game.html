@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC-TOE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+      <div class="game">
+              <div class="section">
+                <h3> Select your turn</h3>
+                <div class="turn-container">
+                        <div class="turn-box align player-active" id="xplayerdisplay" onclick="chooseTurn('x')">X</div>
+                        <div class="turn-box align" id="oplayerdisplay" onclick="chooseTurn('o')">O</div>
+                </div>
+    <div class="main-grid">
+        <div class="box align">0</div>
+        <div class="box align">1</div>
+        <div class="box align">2</div>
+        <div class="box align">3</div>
+        <div class="box align">4</div>
+        <div class="box align">5</div>
+        <div class="box align">6</div>
+        <div class="box align">7</div>
+        <div class="box align">8</div>
+    </div>
+<h2 id="results"></h2>
+<button id="play-again"> Play Again</button>
+
+<div id="winner-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal">&times;</span>
+      <h2 id="winner-message"></h2>
+    </div>
+  </div>
+              </div>
+      </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <canvas id="fullscreen-confetti"></canvas>
+</body>
+</html>

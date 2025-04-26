@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC-TAC-TOE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url(b.avif) no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            overflow: hidden; 
+        }
+        .game {
+            background-color: transparent;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            width: 300px;
+            height: 100vh;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 60px;
+            gap: 20px;
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+            box-shadow: none;
+            padding: 10px;
+            border-radius: 8px;
+            margin-left: -20px;
+           
+        }
+        .player-info.player-o{
+            border-color: #00d9ff; /* Match 'O' symbol background */
+            box-shadow: 0 0 10px #00bfff; /* Keep a subtle shadow */
+        }
+        .player-info.player-x{
+            border-color: #ff0084; /* Match 'X' symbol background */
+            box-shadow: 0 0 10px #ff0084; /* Keep a subtle shadow */
+        }
+        .player-symbol {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .player-o .player-symbol {
+            background-color: #00d9ff;
+            color: #fff;
+        }
+
+        .player-x .player-symbol {
+            background-color: #ff0084;
+            color: #000;
+        }
+
+        .player-name {
+            font-size: 1em;
+            color: #aaa;
+            margin: 10px;
+        }
+
+        .player-score-display {
+            font-size: 1.5em;
+        }
+
+        .versus {
+            font-size: 1.5em;
+            color: #aaa;
+            margin: 0px 15px;
+            margin-top: 50px;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-grid{
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            grid-template-rows: repeat(3,1fr);
+            height: 310px;
+            width: 300px;
+            gap: 10px;
+            margin: 30px auto;
+        }
+
+        .box{
+            background: transparent;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ffffff;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgb(24, 190, 250);
+            box-shadow: 0 0 10px #00bfff;
+        }
+
+        .box:hover {
+            background-color: #d0d0d0;
+            color: rgb(0, 0, 0);
+        }
+
+        h2#results {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 18px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 8px;
+            position: relative;
+            color: #333;
+            text-align: center;
+        }
+
+        .modal-content h2#winner-message {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        #close-modal {
+            color: #3c3c3c;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        #close-modal:hover,
+        #close-modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .turn-container {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .turn-container h3 {
+            font-size: 1.3em;
+            color: #aaa;
+            margin-top: 50px;
+        }
+
+        canvas#fullscreen-confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Make it non-interactive */
+            z-index: 2; /* Ensure it's on top of other elements */
+        }
+    </style>
+</head>
+<body>
+    <div class="game">
+        <div class="score-container">
+            <div class="player-info player-o">
+                <div class="player-symbol">O</div>
+                <div class="player-name">Player</div>
+                <div class="player-score-display" id="score-o">0</div>
+            </div>
+            <div class="versus">VS</div>
+            <div class="player-info player-x">
+                <div class="player-symbol">X</div>
+                <div class="player-name">Player</div>
+                <div class="player-score-display" id="score-x">0</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="turn-container">
+                <h3>Round 1/5</h3>
+            </div>
+            <div class="main-grid">
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+            </div>
+            <h2 id="results"></h2>
+
+            <div id="winner-modal" class="modal">
+                <div class="modal-content">
+                    <span id="close-modal">&times;</span>
+                    <h2 id="winner-message"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let boxes = document.querySelectorAll(".box");
+        const scoreXDisplay = document.getElementById("score-x");
+        const scoreODisplay = document.getElementById("score-o");
+        const roundDisplay = document.querySelector(".turn-container h3");
+
+        let turn = "X";
+        let isGameOver = false;
+        let xScore = 0;
+        let oScore = 0;
+        let roundCount = 1;
+        const totalRounds = 5;
+
+        boxes.forEach((e, index) => {
+            e.innerHTML = "";
+            e.addEventListener("click", () => {
+                if (!isGameOver && e.innerHTML === "") {
+                    e.innerHTML = turn;
+                    cheakWin();
+                    cheakDraw();
+                    changeTurn();
+                }
+            });
+        });
+
+        function changeTurn() {
+            if (turn === "X") {
+                turn = "O";
+            } else {
+                turn = "X";
+            }
+            updateRoundDisplay();
+        }
+
+        function updateRoundDisplay() {
+            roundDisplay.innerText = `Round ${roundCount}/${totalRounds}`;
+        }
+
+        function cheakWin() {
+            let winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+            ];
+            for (let i = 0; i < winConditions.length; i++) {
+                let v0 = boxes[winConditions[i][0]].innerHTML;
+                let v1 = boxes[winConditions[i][1]].innerHTML;
+                let v2 = boxes[winConditions[i][2]].innerHTML;
+
+                if (v0 != "" && v0 === v1 && v0 === v2) {
+                    isGameOver = true;
+                    highlightWinningLine(winConditions[i]);
+
+                    if (turn === "X") {
+                        xScore++;
+                        scoreXDisplay.innerText = xScore;
+                    } else {
+                        oScore++;
+                        scoreODisplay.innerText = oScore;
+                    }
+
+                    if (roundCount < totalRounds) {
+                        setTimeout(nextRound, 1300);
+                    } else {
+                        setTimeout(determineOverallWinner, 1500);
+                    }
+                    return;
+                }
+            }
+        }
+
+        function highlightWinningLine(line) {
+            let winningSymbol = boxes[line[0]].innerHTML;
+
+            let highlightColor;
+            if (winningSymbol === "X") {
+                highlightColor = " #ff0084"; // Pink for X
+            } else if (winningSymbol === "O") {
+                highlightColor = "#00d9ff"; // Light Blue for O
+            }
+
+            line.forEach(index => {
+                boxes[index].style.backgroundColor = highlightColor;
+                boxes[index].style.color = "#000";
+            });
+        }
+
+        function cheakDraw() {
+            if (!isGameOver) {
+                let isDraw = true;
+                boxes.forEach(e => {
+                    if (e.innerHTML === "") isDraw = false;
+                });
+                if (isDraw) {
+                    isGameOver = true;
+                    document.querySelector("#results").innerHTML = "Draw";
+                    if (roundCount < totalRounds) {
+                        setTimeout(nextRound, 1500);
+                    } else {
+                        setTimeout(determineOverallWinner, 1500);
+                    }
+                }
+            }
+        }
+
+        function nextRound() {
+            isGameOver = false; // Allow new moves
+            turn = "X"; // Reset the turn to Player X for the new round
+            roundCount++; // Increment the round counter
+            updateRoundDisplay(); // Update the displayed round number
+            document.querySelector("#results").innerHTML = ""; // Clear any previous result message
+            boxes.forEach(e => {
+                e.innerHTML = "";
+                e.style.removeProperty("background-color");
+                e.style.color = "#fff";
+            });
+        }
+
+        function determineOverallWinner() {
+            let overallWinnerMessage;
+            if (xScore > oScore) {
+                overallWinnerMessage = "Player X wins the game! 🎉";
+            } else if (oScore > xScore) {
+                overallWinnerMessage = "Player O wins the game! 🎉";
+            } else {
+                overallWinnerMessage = "It's a tie game!";
+            }
+            showWinnerModal(overallWinnerMessage);
+            celebrate();
+            setTimeout(resetGame, 3000);
+        }
+
+
+        function resetGame() {
+            isGameOver = false;
+            turn = "X";
+            xScore = 0;
+            oScore = 0;
+            roundCount = 1;
+            updateRoundDisplay();
+            scoreXDisplay.innerText = xScore;
+            scoreODisplay.innerText = oScore;
+            document.querySelector("#results").innerHTML = "";
+
+
+            boxes.forEach(e => {
+                e.innerHTML = "";
+                e.style.removeProperty("background-Color");
+                e.style.color = "#fff";
+            });
+            const modal = document.getElementById("winner-modal");
+            modal.style.display = "none";
+            clearConfettiCanvas();
+        }
+
+        function celebrate() {
+            const canvas = document.getElementById("fullscreen-confetti");
+            const myConfetti = confetti.create(canvas, {
+                resize: true,
+                useWorker: true
+            });
+            const audio = new Audio('sound.wav');
+            audio.play().catch(err => console.warn("Sound blocked by browser:", err));
+            const duration = 2000;
+            const end = Date.now() + duration;
+            (function frame() {
+                myConfetti({ particleCount: 8, angle: 60, spread: 85, origin: { x: 0, y: 0.5 } });
+                myConfetti({ particleCount: 8, angle: 120, spread: 85, origin: { x: 0.99, y: 0.5 } });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
+            function clearConfettiCanvas() {
+
+            const canvas = document.getElementById("fullscreen-confetti");
+
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        }
+
+        function showWinnerModal(message) {
+            const modal = document.getElementById("winner-modal");
+            const messageBox = document.getElementById("winner-message");
+            modal.style.display = "block";
+            messageBox.innerText = message;
+
+        }
+
+        document.getElementById("close-modal").addEventListener("click", () => {
+            document.getElementById("winner-modal").style.display = "none";
+
+        });
+
+        window.addEventListener("click", function(e) {
+            const modal = document.getElementById("winner-modal");
+            if (e.target === modal) {
+                modal.style.display = "none";
+
+            }
+        });
+
+        // Initialize round display
+        updateRoundDisplay();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <canvas id="fullscreen-confetti"></canvas>
+</body>
+</html>

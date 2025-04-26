@@ -1,16 +1,23 @@
 *{
     color: rgb(255, 255, 255);
-    font-family: sans-serif;
+    font-family: 'Press Start 2P', cursive;
     transition: 0.2s ease-in-out;
     user-select: none;
+    box-sizing: border-box;
 }
 body{
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    text-align: center;
-    padding-top: 5vh;
+  background:url(b3.jpg);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; 
+}
+.game{
+  margin-top: 5%;
+  height: 300px;
 }
 .align{
   justify-content: center;
@@ -18,68 +25,160 @@ body{
   display: flex;
 }
 .turn-container{
-    width: 170px;
-    height: 80px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
-.turn-container h3{
-    margin: 0;
-    grid-column-start: 1;
-    grid-column-end: 3;
+h3{
+   margin-bottom: 30px;
+    margin-left: 38%;
+    font-size: 25px;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
+
 .turn-container .turn-box{
-    border: 3px solid rgb(255, 255, 255);
-    font-family: 1.6rem;
-    font-weight: 700;
+    box-shadow: 0 0 8px #9a9a9a;
+    width: 60px;
+    height: 60px;
+    border-radius: 20%;
+    margin:  0.5rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-sizing: border-box;
 }
-.turn-container .turn-box:nth-child(even){
-    border-right: none;
+.turn-container .turn-box:hover {
+ 
+  outline: 1px solid rgb(24, 190, 250); 
 }
-.bg{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 85px;
-    height: 40px;
-    background-color: #ff2e63;
-    z-index: -1;
+
+.turn-container .player-active {
+  opacity: 1;
+  outline: 1px solid rgb(24, 190, 250);
+  box-sizing: border-box;
 }
+
 .main-grid{
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3,1fr);
     grid-template-rows: repeat(3,1fr);
-    height: 250px;
-    width: 250px;
+    height: 310px;
+    width: 300px;
+    gap: 10px;
     margin: 30px auto;
-    border: 2px solid rgb(255, 255, 255);
 }
+
 .box{
+    background: transparent;
     cursor: pointer;
     font-size: 2rem;
+    color: #ffffff;
     font-weight: 700;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid rgb(24, 190, 250);
+    box-shadow: 0 0 10px #00bfff;
 }
 h1 {
     margin-bottom: 20px;
 }
 .box:hover{
-    background-color: #ff2e63;
-}
-#play-again{
-    background-color: #ff2e63;
-    padding: 10px 22px;
-    border: none;
-    font-size: 1.2rem;
-    border-radius: 5px;
-   cursor: pointer;
-   display: none;
-}
-#play-again:hover{
-    padding: 10px 40px;
-    background-color: aqua;
+    background-color: #ffffff;
     color: rgb(0, 0, 0);
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%; 
+  border-radius: 8px;
+  position: relative;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content h2#winner-message {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.4rem;
+}
+  
+  #close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #282828;
+  }
+  
+  #close-modal:hover {
+    color: #ff0000;
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  #fullscreen-confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  #results {
+    /* Existing styles for your results display */
+    font-size: 2em; /* Adjust as needed */
+    color: #f0ad4e; 
+    text-align: center;
+    margin-top: 20px; 
+    position: fixed;
+    bottom: 20px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; 
+    background-color:transparent;
+    padding: 10px 0; 
+    z-index: 10;
+  }
+  #play-again {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #00bfff;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00bfff;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-family: 'Press Start 2P', cursive;
+    z-index: 1000;
+}
+
+#play-again:hover {
+    background-color: #00869e;
+    transform: scale(1.05);
+}
+
+#play-again:active {
+    background-color: #005d6b;
+    transform: scale(0.95);
 }
