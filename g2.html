@@ -287,6 +287,7 @@
                 width: 70%;
                 margin-top: 30%;
                 padding: 15px;
+                line-height: 2;
             }
 
             .modal-content h2#winner-message {
@@ -581,7 +582,7 @@
             });
             const audio = new Audio('sound.wav');
             audio.play().catch(err => console.warn("Sound blocked by browser:", err));
-            const duration = 2000;
+            const duration = 1000;
             const end = Date.now() + duration;
             (function frame() {
                 myConfetti({ particleCount: 8, angle: 60, spread: 85, origin: { x: 0, y: 0.5 } });
