@@ -8,8 +8,12 @@
         body {
             margin: 0;
             overflow: hidden;
-            font-family: sans-serif; /* Basic font for potential text */
-            background-color: #000; /* Fallback background color */
+            font-family: sans-serif;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .background {
@@ -27,51 +31,180 @@
             object-fit: cover;
         }
 
-        .play-button-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-        }
-
         .play {
             padding: 15px 30px;
             font-size: 1.8rem;
-            margin-top: 260px;
-            margin-left: 470px;
-            color: #ffffff; /* Vibrant blue color */
-            background: #0b132b; /* Dark background for contrast */
+            color: #ffffff;
+            background: #0b132b;
             border: 2px solid #00bfff;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 15px #00bfff, /* Initial glow */
-                        0 0 5px #0077be inset; /* Inner shadow for depth */
+            box-shadow: 0 0 15px #00bfff,
+                        0 0 5px #0077be inset;
             transition: box-shadow 0.3s ease-in-out;
-            text-shadow: 0 0 5px #00bfff; /* Text glow */
+            text-shadow: 0 0 5px #00bfff;
         }
 
         .play:hover {
-            box-shadow: 0 0 25px #00bfff, /* Stronger glow on hover */
+            box-shadow: 0 0 25px #00bfff,
                         0 0 8px #0077be inset;
         }
 
         .play:active {
-            box-shadow: 0 0 10px #00bfff, /* Slightly less intense on click */
+            box-shadow: 0 0 10px #00bfff,
                         0 0 3px #0077be inset;
         }
 
-     
+        #detailsContainer {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            max-width: 300px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: #010101;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            color: #610177;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        #detailsContainer .btn {
+            padding: 22px 25px;
+            border: none;
+            margin: 8px 0;
+            background-color: #8400af;
+            color: #ffffff;
+            font-size: 1.2em;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+            font-style: normal;
+            font-family: "Poetsen One", sans-serif;
+            border: 2px solid #000723;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #detailsContainer .btn:hover {
+            background-color: #b700ff;
+            transform: scale(1.05);
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 600px) {
+             .background{
+                display: none;
+             }
+             body{
+                background:url(bg4.png) no-repeat; 
+                background-position: center;
+                background-size:cover;
+             }
+              .play {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+                margin-bottom: -90%;
+                margin-left: 50%;
+                transform: translateX(-50%);
+                box-shadow: 0 0 25px #ac009b,
+                        0 0 8px #5d0054 inset;
+                transition: box-shadow 0.3s ease-in-out;
+                text-shadow: 0 0 5px #8b0082;
+                border: 2px solid #c400c4;
+               }
+               .play:hover {
+                box-shadow: 0 0 25px #ff03e6,
+                        0 0 8px #810074 inset;
+        }
+
+        }
+
     </style>
 </head>
 <body>
     <div class="background">
         <img src="bg1.png" alt="Background Image">
     </div>
-    <div class="play-button-container">
-       <a href="set.html"><button class="play">Play Now</button></a>
-    </div>
-
+ 
+        <button class="play" onclick="showButtons()">Play Now</button>
+  
     
+    <div id="detailsContainer" style="display: none;">
+        <div class="details-header">
+            <button class="close-button" onclick="closeDetails()">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only"></span>
+            </button>
+        </div>
+        <div class="details-content">
+       <a href="game.html"><button class="btn" onclick="optionOne()">Play with Computer</button></a> 
+       <a href="g2.html"><button class="btn" onclick="optionTwo()">Play with Friends</button></a>
+    </div>
+    </div>
+    
+    <script>
+        function showButtons() {
+            const detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.style.display = 'block';
+        }
+    
+        function closeDetails() {
+            const detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.style.display = 'none';
+        }
+    
+        function optionOne() {
+            console.log('Option One clicked!');
+            
+        }
+    
+        function optionTwo() {
+            console.log('Option Two clicked!');
+            
+        }
+    </script>
 </body>
 </html>

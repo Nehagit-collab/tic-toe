@@ -9,6 +9,7 @@ const winnerModal = document.getElementById("winner-modal");
 const closeModalButton = document.getElementById("close-modal");
 const winnerMessage = document.getElementById("winner-message");
 const confettiCanvas = document.getElementById("fullscreen-confetti");
+const eatSound = document.getElementById("eatSound");
 
 let humanPlayer = "";
 let computerPlayer = "";

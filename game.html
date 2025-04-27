@@ -4,41 +4,653 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIC-TOE</title>
-    <link rel="stylesheet" href="style.css">
+  <style>
+    *{
+            color: rgb(255, 255, 255);
+            font-family: 'Press Start 2P', cursive;
+            transition: 0.2s ease-in-out;
+            user-select: none;
+            box-sizing: border-box;
+            margin: 0; /* Reset default margins */
+            padding: 0; /* Reset default padding */
+        }
+        body{
+            background: url(b3.jpg) center/cover no-repeat;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+        }
+        .game{
+            text-align: center; 
+        }
+.align{
+  justify-content: center;
+  align-items: center; 
+  display: flex;
+}
+.turn-container{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+h3{
+   margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+.turn-container{
+   display: flex;
+    gap: 10px; 
+    margin-bottom: 20px;
+}
+ .turn-box{
+    box-shadow: 0 0 8px #9a9a9a;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    cursor: pointer;
+}
+ .turn-box:hover { 
+  outline: 1px solid rgb(24, 190, 250); 
+}
+
+.player-active {
+  opacity: 1;
+  outline: 1px solid rgb(24, 190, 250);
+  box-sizing: border-box;
+}
+
+.main-grid{
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    height: 310px;
+    width: 300px;
+    gap: 10px;
+    margin: 30px auto;
+}
+
+.box{
+    background: transparent;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ffffff;
+    font-weight: 700;
+    border: 2px solid rgb(24, 190, 250);
+    box-shadow: 0 0 10px #00bfff;
+}
+h1 {
+    margin-bottom: 20px;
+}
+.box:hover{
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%; 
+  border-radius: 8px;
+  position: relative;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content h2#winner-message {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.4rem;
+}
+  
+  #close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #282828;
+  }
+  
+  #close-modal:hover {
+    color: #ff0000;
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  #fullscreen-confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  #results {
+    /* Existing styles for your results display */
+    font-size: 1.5em; /* Adjust as needed */
+    color: #f0ad4e; 
+    text-align: center;
+    margin-top: 60px; 
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; 
+    background-color:transparent;
+    padding: 10px 0; 
+    z-index: 10;
+  }
+  #play-again {
+    margin-top: 30px;
+    margin-left: 43%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #00a7ded5;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #0097c9;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-family: 'Press Start 2P', cursive;
+    z-index: 1000;
+}
+
+#play-again:hover {
+    background-color: #00d9ff;
+    transform: scale(1.05);
+}
+
+#play-again:active {
+    background-color: #00ddff;
+    transform: scale(0.95);
+}
+#settings {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px 10px;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #0e0e0e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+#settings:hover {
+    background-color: #00a6ffeb;
+    transform: scale(1.05);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+#settings i {
+    font-size: 1.5em;
+    color: black;
+}
+@media (min-width: 768px) { /* Tablets and larger */
+            .main-grid {
+                width: 300px;
+                height: 300px;
+                gap: 10px;
+                margin: 30px auto;
+            }
+            .box {
+                font-size: 2rem;
+            }
+            h3 {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            .turn-box {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                border-radius: 15px;
+            }
+            #results {
+                font-size: 1.5em;
+                margin-top: 40px;
+            }
+            #play-again {
+                font-size: 1.1rem;
+                padding: 10px 20px;
+            }
+            #settings {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            #settings i {
+                font-size: 1.4em;
+            }
+            .modal-content {
+                margin: 20% auto;
+                width: 50%;
+                max-width: 400px;
+            }
+            .modal-content h2#winner-message {
+                font-size: 1.5rem;
+            }
+            #close-modal {
+                font-size: 24px;
+            }
+        }
+  </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
 <body>
-      <div class="game">
-              <div class="section">
-                <h3> Select your turn</h3>
-                <div class="turn-container">
-                        <div class="turn-box align player-active" id="xplayerdisplay" onclick="chooseTurn('x')">X</div>
-                        <div class="turn-box align" id="oplayerdisplay" onclick="chooseTurn('o')">O</div>
+    <div class="game">
+        <div class="section">
+            <h3> Select your turn</h3>
+            <div class="turn-container">
+                <div class="turn-box align player-active" id="xplayerdisplay" onclick="chooseTurn('x')">X</div>
+                <div class="turn-box align" id="oplayerdisplay" onclick="chooseTurn('o')">O</div>
+            </div>
+            <div class="main-grid">
+                <div class="box align">0</div>
+                <div class="box align">1</div>
+                <div class="box align">2</div>
+                <div class="box align">3</div>
+                <div class="box align">4</div>
+                <div class="box align">5</div>
+                <div class="box align">6</div>
+                <div class="box align">7</div>
+                <div class="box align">8</div>
+            </div>
+            <h2 id="results"></h2>
+            <button id="play-again"> Play Again</button>
+
+            <div id="winner-modal" class="modal">
+                <div class="modal-content">
+                    <span id="close-modal">&times;</span>
+                    <h2 id="winner-message"></h2>
                 </div>
-    <div class="main-grid">
-        <div class="box align">0</div>
-        <div class="box align">1</div>
-        <div class="box align">2</div>
-        <div class="box align">3</div>
-        <div class="box align">4</div>
-        <div class="box align">5</div>
-        <div class="box align">6</div>
-        <div class="box align">7</div>
-        <div class="box align">8</div>
+            </div>
+            <a href="index.html"><button id="settings"><i class='bx bxs-home' ></i></button></a> 
+        </div>
     </div>
-<h2 id="results"></h2>
-<button id="play-again"> Play Again</button>
+  <script>
+    const boxes = document.querySelectorAll(".box");
+const xplayerDisplayTurn = document.getElementById("xplayerdisplay");
+const oplayerDisplayTurn = document.getElementById("oplayerdisplay");
+const turnContainer = document.querySelector(".turn-container");
+const gameBoard = document.querySelector(".main-grid");
+const resultsDisplay = document.getElementById("results");
+const playAgainButton = document.getElementById("play-again");
+const winnerModal = document.getElementById("winner-modal");
+const closeModalButton = document.getElementById("close-modal");
+const winnerMessage = document.getElementById("winner-message");
+const confettiCanvas = document.getElementById("fullscreen-confetti");
 
-<div id="winner-modal" class="modal">
-    <div class="modal-content">
-      <span id="close-modal">&times;</span>
-      <h2 id="winner-message"></h2>
-    </div>
-  </div>
-              </div>
-      </div>
+let humanPlayer = "";
+let computerPlayer = "";
+let turn = "";
+let isGameOver = false;
+let winConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+];
 
-    <script src="script.js"></script>
+function initializeGameBoard() {
+    boxes.forEach(e => {
+        e.textContent = "";
+        e.style.removeProperty("background-Color");
+        e.style.color = "#fffff";
+        e.removeEventListener("click", handleBoxClick);
+    });
+    if (gameBoard) {
+        gameBoard.style.display = "grid";
+    }
+    resultsDisplay.textContent = "";
+    playAgainButton.style.display = "none";
+}
+
+function activateGameBoard() {
+    boxes.forEach(e => {
+        e.addEventListener("click", handleBoxClick);
+    });
+}
+
+function handleBoxClick() {
+    if (!isGameOver && this.textContent === "" && turn === humanPlayer) {
+      playClickSound();
+      this.textContent = humanPlayer;
+        cheakWin();
+        cheakDraw();
+        if (!isGameOver) {
+            turn = computerPlayer;
+            console.log("handleBoxClick: Turn set to", turn);
+            updateActivePlayerDisplay();
+            setTimeout(computerMoveIntermediateAI, 800);
+        }
+    }
+}
+
+function computerMoveIntermediateAI() {
+    if (!isGameOver && turn === computerPlayer) {
+        isGameOver = true;
+
+        setTimeout(() => {
+            let bestMove = -1;
+            let moveMade = false;
+
+            function makeTheMove(index) {
+                const selectedBox = boxes[index];
+                selectedBox.textContent = computerPlayer;
+                cheakWin();
+                cheakDraw();
+                turn = humanPlayer;
+                updateActivePlayerDisplay();
+                isGameOver = false;
+                moveMade = true;
+            }
+
+            function getWinningMove(player) {
+                for (let i = 0; i < boxes.length; i++) {
+                    if (boxes[i].textContent === "") {
+                        boxes[i].textContent = player;
+                        if (cheakWinCondition(player)) {
+                            boxes[i].textContent = "";
+                            return i;
+                        }
+                        boxes[i].textContent = "";
+                    }
+                }
+                return -1;
+            }
+
+            function getForkingMove(player) {
+                for (let i = 0; i < boxes.length; i++) {
+                    if (boxes[i].textContent === "") {
+                        boxes[i].textContent = player;
+                        let winningLines = 0;
+                        for (const win of winConditions) {
+                            const line = win.map(index => boxes[index].textContent);
+                            const playerInLine = line.filter(cell => cell === player).length;
+                            const emptyInLine = line.filter(cell => cell === "").length;
+                            if (playerInLine === 2 && emptyInLine === 1) {
+                                winningLines++;
+                            }
+                        }
+                        boxes[i].textContent = "";
+                        if (winningLines >= 2) {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+
+            function getForkBlockingMove(player) {
+                const humanForks = [];
+                for (let i = 0; i < boxes.length; i++) {
+                    if (boxes[i].textContent === "") {
+                        boxes[i].textContent = player;
+                        let winningLines = 0;
+                        for (const win of winConditions) {
+                            const line = win.map(index => boxes[index].textContent);
+                            const playerInLine = line.filter(cell => cell === player).length;
+                            const emptyInLine = line.filter(cell => cell === "").length;
+                            if (playerInLine === 2 && emptyInLine === 1) {
+                                winningLines++;
+                            }
+                        }
+                        boxes[i].textContent = "";
+                        if (winningLines >= 2) {
+                            humanForks.push(i);
+                        }
+                    }
+                }
+
+                if (humanForks.length === 1) {
+                    return humanForks[0];
+                } else if (humanForks.length > 1) {
+                    const nonCornerMoves = [1, 3, 5, 7].filter(index => boxes[index].textContent === "");
+                    if (nonCornerMoves.length > 0) {
+                        return nonCornerMoves[0];
+                    } else {
+                        return humanForks[0];
+                    }
+                }
+                return -1;
+            }
+
+            // 1. Check if computer can win
+            bestMove = getWinningMove(computerPlayer);
+            if (bestMove !== -1) {
+                makeTheMove(bestMove);
+                return;
+            }
+
+            // 2. Check if human can win and block
+            bestMove = getWinningMove(humanPlayer);
+            if (bestMove !== -1) {
+                makeTheMove(bestMove);
+                return;
+            }
+
+            // 3. Try to create a fork for the computer
+            bestMove = getForkingMove(computerPlayer);
+            if (bestMove !== -1) {
+                makeTheMove(bestMove);
+                return;
+            }
+
+            // 4. Try to block a fork for the human
+            bestMove = getForkBlockingMove(humanPlayer);
+            if (bestMove !== -1) {
+                makeTheMove(bestMove);
+                return;
+            }
+
+            // 5. Play the center if it's open
+            if (boxes[4].textContent === "") {
+                makeTheMove(4);
+                return;
+            }
+
+            // 6. Play a corner if it's open
+            const openCorners = [0, 2, 6, 8].filter(index => boxes[index].textContent === "");
+            if (openCorners.length > 0) {
+                bestMove = openCorners[Math.floor(Math.random() * openCorners.length)];
+                makeTheMove(bestMove);
+                return;
+            }
+
+            // 7. Play any open side
+            const openSides = [1, 3, 5, 7].filter(index => boxes[index].textContent === "");
+            if (openSides.length > 0) {
+                bestMove = openSides[Math.floor(Math.random() * openSides.length)];
+                makeTheMove(bestMove);
+                return;
+            }
+
+            if (!moveMade) {
+                cheakDraw();
+                turn = humanPlayer;
+                updateActivePlayerDisplay();
+                isGameOver = false;
+            }
+
+        }, 100);
+    }
+}
+
+function cheakWinCondition(player) {
+    for (let i = 0; i < winConditions.length; i++) {
+        if (
+            boxes[winConditions[i][0]].textContent === player &&
+            boxes[winConditions[i][1]].textContent === player &&
+            boxes[winConditions[i][2]].textContent === player
+        ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function chooseTurn(selectedTurn) {
+    if (!isGameOver && humanPlayer === "") {
+        humanPlayer = selectedTurn.toUpperCase();
+        computerPlayer = (humanPlayer === 'X') ? 'O' : 'X';
+        turn = humanPlayer;
+        turnContainer.style.display = "flex";
+        activateGameBoard();
+        updateActivePlayerDisplay();
+    }
+}
+
+function updateActivePlayerDisplay() {
+    if (xplayerDisplayTurn && oplayerDisplayTurn) {
+        xplayerDisplayTurn.classList.remove('player-active');
+        oplayerDisplayTurn.classList.remove('player-active');
+        if (turn === "X") {
+            xplayerDisplayTurn.classList.add('player-active');
+        } else if (turn === "O") {
+            oplayerDisplayTurn.classList.add('player-active');
+        }
+    }
+}
+
+function changeTurn() {
+    turn = (turn === "X") ? "O" : "X";
+}
+
+function cheakWin() {
+    for (let i = 0; i < winConditions.length; i++) {
+        let v0 = boxes[winConditions[i][0]].textContent;
+        let v1 = boxes[winConditions[i][1]].textContent;
+        let v2 = boxes[winConditions[i][2]].textContent;
+
+        if (v0 !== "" && v0 === v1 && v0 === v2) {
+            isGameOver = true;
+            const winner = v0 === humanPlayer ? `${v0} wins! 🎉` : "Computer wins! 🎉";
+            showWinnerModal(winner);
+            celebrate();
+            removeBoxEventListeners();
+            for (let j = 0; j < 3; j++) {
+                boxes[winConditions[i][j]].style.backgroundColor = "#08D9D6";
+                boxes[winConditions[i][j]].style.color = "#fff";
+            }
+            break;
+        }
+    }
+}
+
+function cheakDraw() {
+    if (!isGameOver) {
+        let isDraw = true;
+        boxes.forEach(e => {
+            if (e.textContent === "") isDraw = false;
+        });
+        if (isDraw) {
+            isGameOver = true;
+            resultsDisplay.textContent = "Draw!";
+            playAgainButton.style.display = "block"; // Make the button visible
+            playAgainButton.addEventListener("click", resetGame);
+            removeBoxEventListeners();
+        }
+    }
+}
+
+
+function resetGame() {
+    isGameOver = false;
+    humanPlayer = "";
+    computerPlayer = "";
+    turn = "";
+    resultsDisplay.textContent = "";
+    playAgainButton.style.display = "none";
+    initializeGameBoard();
+    if (turnContainer) {
+        turnContainer.style.display = "grid";
+    }
+    updateActivePlayerDisplay();
+}
+
+function removeBoxEventListeners() {
+    boxes.forEach(e => {
+        e.removeEventListener("click", handleBoxClick);
+    });
+}
+
+function showWinnerModal(message) {
+    winnerModal.style.display = "block";
+    winnerMessage.textContent = message;
+}
+
+closeModalButton.addEventListener("click", () => {
+    winnerModal.style.display = "none";
+    resetGame();
+});
+
+window.addEventListener("click", function (e) {
+    if (e.target === winnerModal) {
+        winnerModal.style.display = "none";
+        resetGame();
+    }
+});
+
+function celebrate() {
+    console.log("celebrate() called");
+    const myConfetti = confetti.create(confettiCanvas, {
+        resize: true,
+        useWorker: true
+    });
+    const audio = new Audio('sound.wav');
+    audio.play().catch(err => console.warn("Sound blocked by browser:", err));
+    const duration = 1800;
+    const end = Date.now() + duration;
+    (function frame() {
+        myConfetti({ particleCount: 8, angle: 60, spread: 85, origin: { x: 0, y: 0.5 } });
+        myConfetti({ particleCount: 8, angle: 120, spread: 85, origin: { x: 0.99, y: 0.5 } });
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
+}
+
+initializeGameBoard();
+updateActivePlayerDisplay();
+function playClickSound() {
+    const clickSound = new Audio('click.wav'); // Create an audio object
+    clickSound.play().catch(err => console.warn("Click sound blocked by browser:", err)); // Play the sound, handle potential blocking
+}
+  </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <canvas id="fullscreen-confetti"></canvas>
 </body>

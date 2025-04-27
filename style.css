@@ -36,23 +36,28 @@ h3{
     color: #ffffff;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
-
-.turn-container .turn-box{
-    box-shadow: 0 0 8px #9a9a9a;
-    width: 60px;
-    height: 60px;
-    border-radius: 20%;
-    margin:  0.5rem;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-sizing: border-box;
+.turn-container{
+   display: flex;
+    gap: 10px; 
+    margin-bottom: 20px;
 }
-.turn-container .turn-box:hover {
- 
+ .turn-box{
+    box-shadow: 0 0 8px #9a9a9a;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    cursor: pointer;
+}
+ .turn-box:hover { 
   outline: 1px solid rgb(24, 190, 250); 
 }
 
-.turn-container .player-active {
+.player-active {
   opacity: 1;
   outline: 1px solid rgb(24, 190, 250);
   box-sizing: border-box;
