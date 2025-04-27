@@ -255,7 +255,7 @@ h1 {
             }
 
             #settings i {
-                font-size: 1.2em;
+                font-size: 1em;
             }
             .modal-content {
                 margin: 20% auto;
@@ -267,6 +267,36 @@ h1 {
             }
             #close-modal {
                 font-size: 24px;
+            }
+        }
+        @media (max-width: 600px) {
+            #settings {
+                padding: 8px;
+                font-size: 1rem;
+                top: 10px;
+                right: 10px;
+            }
+
+            #settings i {
+                font-size: 1em;
+            } 
+            .modal{
+                margin-top: 40%;
+            }
+            .modal-content {
+                margin: 20% auto;
+                width: 60%;
+                max-width: 400px;
+                line-height: 2;
+                align-items: center;
+                justify-content:center;
+                text-align: center;
+            }
+            .modal-content h2#winner-message {
+                font-size: 1rem;
+            }
+            #close-modal {
+                font-size: 15px;
             }
         }
   </style>
@@ -597,7 +627,7 @@ function resetGame() {
     playAgainButton.style.display = "none";
     initializeGameBoard();
     if (turnContainer) {
-        turnContainer.style.display = "grid";
+        turnContainer.style.display = "flex";
     }
     updateActivePlayerDisplay();
 }
@@ -633,11 +663,11 @@ function celebrate() {
     });
     const audio = new Audio('sound.wav');
     audio.play().catch(err => console.warn("Sound blocked by browser:", err));
-    const duration = 1800;
+    const duration = 1000;
     const end = Date.now() + duration;
     (function frame() {
-        myConfetti({ particleCount: 8, angle: 60, spread: 85, origin: { x: 0, y: 0.5 } });
-        myConfetti({ particleCount: 8, angle: 120, spread: 85, origin: { x: 0.99, y: 0.5 } });
+        myConfetti({ particleCount: 8, angle: 60, spread: 65, origin: { x: 0, y: 0.5 } });
+        myConfetti({ particleCount: 8, angle: 120, spread: 65, origin: { x: 0.99, y: 0.5 } });
         if (Date.now() < end) {
             requestAnimationFrame(frame);
         }
@@ -647,7 +677,7 @@ function celebrate() {
 initializeGameBoard();
 updateActivePlayerDisplay();
 function playClickSound() {
-    const clickSound = new Audio('click.wav'); // Create an audio object
+    const clickSound = new Audio('click.wav'); 
     clickSound.play().catch(err => console.warn("Click sound blocked by browser:", err)); // Play the sound, handle potential blocking
 }
   </script>
